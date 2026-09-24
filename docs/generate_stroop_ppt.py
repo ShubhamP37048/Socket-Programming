@@ -10,17 +10,6 @@ from pptx.enum.text import PP_ALIGN
 from pptx.util import Inches, Pt
 
 
-WORDS = [
-    "RED",
-    "BLUE",
-    "GREEN",
-    "YELLOW",
-    "PINK",
-    "PURPLE",
-    "BLACK",
-    "ORANGE",
-]
-
 COLORS = {
     "RED": RGBColor(192, 0, 0),
     "BLUE": RGBColor(0, 102, 204),
@@ -31,6 +20,7 @@ COLORS = {
     "BLACK": RGBColor(0, 0, 0),
     "ORANGE": RGBColor(230, 120, 0),
 }
+WORDS = list(COLORS)
 
 LAYOUTS = [
     (6, 6),
