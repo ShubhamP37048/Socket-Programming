@@ -98,6 +98,7 @@ def build_deck() -> Presentation:
                     )
                     shape.fill.background()
                     shape.line.color.rgb = RGBColor(235, 235, 235)
+                    shape.line.width = Pt(1)
 
                 textbox = slide.shapes.add_textbox(x, y, width, height)
                 frame = textbox.text_frame

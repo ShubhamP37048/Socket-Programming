@@ -6,6 +6,12 @@
 ## How it was generated or updated
 
 1. Install Python and `python-pptx`.
+   - Tested with Python 3.12
+   - Install the dependency with:
+
+     ```bash
+     python3 -m pip install python-pptx==1.0.2
+     ```
 2. Run:
 
    ```bash
