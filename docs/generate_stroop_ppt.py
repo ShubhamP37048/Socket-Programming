@@ -48,6 +48,7 @@ FOOTER_LEFT_INCHES = 11.9
 FOOTER_TOP_INCHES = 7.0
 FOOTER_WIDTH_INCHES = 0.9
 FOOTER_HEIGHT_INCHES = 0.25
+OUTPUT_FILENAME = "stroop-test-30-slides.pptx"
 
 
 def build_deck() -> Presentation:
@@ -121,7 +122,7 @@ def build_deck() -> Presentation:
 
 
 def main() -> None:
-    output_path = Path(__file__).with_name("stroop-test-30-slides.pptx")
+    output_path = Path(__file__).with_name(OUTPUT_FILENAME)
     presentation = build_deck()
     presentation.save(output_path)
     print(f"Generated {output_path}")
