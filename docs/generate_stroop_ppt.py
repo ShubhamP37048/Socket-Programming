@@ -59,9 +59,21 @@ def build_deck() -> Presentation:
     presentation.slide_height = Inches(SLIDE_HEIGHT_INCHES)
 
     blank = presentation.slide_layouts[6]
+    used_word_sequences: set[tuple[str, ...]] = set()
 
     for slide_number in range(SLIDE_COUNT):
         rows, columns = LAYOUTS[slide_number % len(LAYOUTS)]
+        item_count = rows * columns
+        while True:
+            word_sequence = WORDS.copy()
+            while len(word_sequence) < item_count:
+                word_sequence.append(rng.choice(WORDS))
+            rng.shuffle(word_sequence)
+            word_signature = tuple(word_sequence)
+            if word_signature not in used_word_sequences:
+                used_word_sequences.add(word_signature)
+                break
+
         slide = presentation.slides.add_slide(blank)
         slide.background.fill.solid()
         slide.background.fill.fore_color.rgb = RGBColor(255, 255, 255)
@@ -84,7 +96,7 @@ def build_deck() -> Presentation:
 
         for row in range(rows):
             for column in range(columns):
-                word = WORDS[(row * columns + column + slide_number) % len(WORDS)]
+                word = word_sequence[row * columns + column]
                 color_choices = MISMATCHED_COLOR_CHOICES[word]
                 font_color_name = color_choices[rng.randrange(len(color_choices))]
 
