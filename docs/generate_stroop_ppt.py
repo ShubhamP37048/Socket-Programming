@@ -41,12 +41,27 @@ LAYOUTS = [
     (8, 4),
 ]
 
+SLIDE_WIDTH_INCHES = 13.333
+SLIDE_HEIGHT_INCHES = 7.5
+LEFT_MARGIN_INCHES = 0.7
+TOP_MARGIN_INCHES = 0.75
+USABLE_WIDTH_INCHES = 11.9
+USABLE_HEIGHT_INCHES = 6.1
+TITLE_LEFT_INCHES = 0.5
+TITLE_TOP_INCHES = 0.18
+TITLE_WIDTH_INCHES = 5.5
+TITLE_HEIGHT_INCHES = 0.4
+FOOTER_LEFT_INCHES = 11.9
+FOOTER_TOP_INCHES = 7.0
+FOOTER_WIDTH_INCHES = 0.9
+FOOTER_HEIGHT_INCHES = 0.25
+
 
 def build_deck() -> Presentation:
     rng = random.Random(37048)
     presentation = Presentation()
-    presentation.slide_width = Inches(13.333)
-    presentation.slide_height = Inches(7.5)
+    presentation.slide_width = Inches(SLIDE_WIDTH_INCHES)
+    presentation.slide_height = Inches(SLIDE_HEIGHT_INCHES)
 
     blank = presentation.slide_layouts[6]
 
@@ -56,7 +71,12 @@ def build_deck() -> Presentation:
         slide.background.fill.solid()
         slide.background.fill.fore_color.rgb = RGBColor(255, 255, 255)
 
-        slide.shapes.add_textbox(Inches(0.5), Inches(0.18), Inches(5.5), Inches(0.4))
+        slide.shapes.add_textbox(
+            Inches(TITLE_LEFT_INCHES),
+            Inches(TITLE_TOP_INCHES),
+            Inches(TITLE_WIDTH_INCHES),
+            Inches(TITLE_HEIGHT_INCHES),
+        )
         title_frame = slide.shapes[-1].text_frame
         title_frame.text = f"STROOP TEST {slide_number + 1:02d}"
         title_run = title_frame.paragraphs[0].runs[0]
@@ -64,12 +84,8 @@ def build_deck() -> Presentation:
         title_run.font.size = Pt(18)
         title_run.font.color.rgb = RGBColor(90, 90, 90)
 
-        left = 0.7
-        top = 0.75
-        usable_width = 11.9
-        usable_height = 6.1
-        cell_width = usable_width / columns
-        cell_height = usable_height / rows
+        cell_width = USABLE_WIDTH_INCHES / columns
+        cell_height = USABLE_HEIGHT_INCHES / rows
 
         for row in range(rows):
             for column in range(columns):
@@ -77,10 +93,21 @@ def build_deck() -> Presentation:
                 color_choices = [name for name in COLORS if name != word]
                 font_color_name = color_choices[rng.randrange(len(color_choices))]
 
-                x = Inches(left + column * cell_width)
-                y = Inches(top + row * cell_height)
+                x = Inches(LEFT_MARGIN_INCHES + column * cell_width)
+                y = Inches(TOP_MARGIN_INCHES + row * cell_height)
                 width = Inches(cell_width)
                 height = Inches(cell_height)
+
+                if (slide_number + row + column) % 5 == 0:
+                    shape = slide.shapes.add_shape(
+                        MSO_AUTO_SHAPE_TYPE.RECTANGLE,
+                        x,
+                        y,
+                        width,
+                        height,
+                    )
+                    shape.fill.background()
+                    shape.line.color.rgb = RGBColor(235, 235, 235)
 
                 textbox = slide.shapes.add_textbox(x, y, width, height)
                 frame = textbox.text_frame
@@ -94,20 +121,12 @@ def build_deck() -> Presentation:
                 run.font.name = "Arial"
                 run.font.color.rgb = COLORS[font_color_name]
 
-                if (slide_number + row + column) % 5 == 0:
-                    shape = slide.shapes.add_shape(
-                        MSO_AUTO_SHAPE_TYPE.RECTANGLE,
-                        x,
-                        y,
-                        width,
-                        height,
-                    )
-                    shape.fill.background()
-                    shape.line.color.rgb = RGBColor(235, 235, 235)
-                    slide.shapes._spTree.remove(shape._element)
-                    slide.shapes._spTree.insert(2, shape._element)
-
-        footer = slide.shapes.add_textbox(Inches(11.9), Inches(7.0), Inches(0.9), Inches(0.25))
+        footer = slide.shapes.add_textbox(
+            Inches(FOOTER_LEFT_INCHES),
+            Inches(FOOTER_TOP_INCHES),
+            Inches(FOOTER_WIDTH_INCHES),
+            Inches(FOOTER_HEIGHT_INCHES),
+        )
         footer_frame = footer.text_frame
         footer_frame.text = str(slide_number + 1)
         footer_paragraph = footer_frame.paragraphs[0]
