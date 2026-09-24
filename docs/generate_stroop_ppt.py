@@ -49,6 +49,7 @@ FOOTER_TOP_INCHES = 7.0
 FOOTER_WIDTH_INCHES = 0.9
 FOOTER_HEIGHT_INCHES = 0.25
 OUTPUT_FILENAME = "stroop-test-30-slides.pptx"
+SLIDE_COUNT = 30
 
 
 def build_deck() -> Presentation:
@@ -59,19 +60,19 @@ def build_deck() -> Presentation:
 
     blank = presentation.slide_layouts[6]
 
-    for slide_number in range(30):
+    for slide_number in range(SLIDE_COUNT):
         rows, columns = LAYOUTS[slide_number % len(LAYOUTS)]
         slide = presentation.slides.add_slide(blank)
         slide.background.fill.solid()
         slide.background.fill.fore_color.rgb = RGBColor(255, 255, 255)
 
-        slide.shapes.add_textbox(
+        title_box = slide.shapes.add_textbox(
             Inches(TITLE_LEFT_INCHES),
             Inches(TITLE_TOP_INCHES),
             Inches(TITLE_WIDTH_INCHES),
             Inches(TITLE_HEIGHT_INCHES),
         )
-        title_frame = slide.shapes[-1].text_frame
+        title_frame = title_box.text_frame
         title_frame.text = f"STROOP TEST {slide_number + 1:02d}"
         title_run = title_frame.paragraphs[0].runs[0]
         title_run.font.bold = True
