@@ -21,6 +21,10 @@ COLORS = {
     "ORANGE": RGBColor(230, 120, 0),
 }
 WORDS = list(COLORS)
+MISMATCHED_COLOR_CHOICES = {
+    word: [name for name in COLORS if name != word]
+    for word in WORDS
+}
 
 LAYOUTS = [
     (6, 6),
@@ -80,7 +84,7 @@ def build_deck() -> Presentation:
         for row in range(rows):
             for column in range(columns):
                 word = WORDS[(row * columns + column + slide_number) % len(WORDS)]
-                color_choices = [name for name in COLORS if name != word]
+                color_choices = MISMATCHED_COLOR_CHOICES[word]
                 font_color_name = color_choices[rng.randrange(len(color_choices))]
 
                 x = Inches(LEFT_MARGIN_INCHES + column * cell_width)

@@ -7,7 +7,8 @@
 
 1. Install Python and `python-pptx`.
    - Tested with Python 3.12
-   - Install the dependency with:
+   - `python-pptx` is not part of the Python standard library.
+   - Install it into the same Python environment/interpreter that you will use to run the generator:
 
      ```bash
      python3 -m pip install python-pptx==1.0.2
