@@ -5,7 +5,6 @@ from pathlib import Path
 
 from pptx import Presentation
 from pptx.dml.color import RGBColor
-from pptx.enum.shapes import MSO_AUTO_SHAPE_TYPE
 from pptx.enum.text import PP_ALIGN
 from pptx.util import Inches, Pt
 
@@ -91,18 +90,6 @@ def build_deck() -> Presentation:
                 y = Inches(TOP_MARGIN_INCHES + row * cell_height)
                 width = Inches(cell_width)
                 height = Inches(cell_height)
-
-                if (slide_number + row + column) % 5 == 0:
-                    shape = slide.shapes.add_shape(
-                        MSO_AUTO_SHAPE_TYPE.RECTANGLE,
-                        x,
-                        y,
-                        width,
-                        height,
-                    )
-                    shape.fill.background()
-                    shape.line.color.rgb = RGBColor(235, 235, 235)
-                    shape.line.width = Pt(1)
 
                 textbox = slide.shapes.add_textbox(x, y, width, height)
                 frame = textbox.text_frame
